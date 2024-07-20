@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do tList</title>
+    <title>To-Do Lisiiit</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,11 +60,10 @@
     <div class="container">
         <h1>To-Do List</h1>
         <input type="text" id="taskInput" placeholder="Enter a new task">
-        <button onclick="addTask()">Add</button>
+        <button id="addTaskButton">Add</button>
         <ul id="taskList"></ul>
     </div>
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
@@ -84,6 +83,7 @@
         const db = getFirestore(app);
 
         document.addEventListener('DOMContentLoaded', loadTasks);
+        document.getElementById('addTaskButton').addEventListener('click', addTask);
 
         async function addTask() {
             const taskInput = document.getElementById('taskInput');
