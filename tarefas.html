@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>To-Do tList</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -89,9 +89,13 @@
             const taskInput = document.getElementById('taskInput');
             const task = taskInput.value;
             if (task) {
-                const docRef = await addDoc(collection(db, "tasks"), { task });
-                addTaskToDOM(task, docRef.id);
-                taskInput.value = '';
+                try {
+                    const docRef = await addDoc(collection(db, "tasks"), { task });
+                    addTaskToDOM(task, docRef.id);
+                    taskInput.value = '';
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                }
             }
         }
 
@@ -104,18 +108,26 @@
             deleteBtn.textContent = 'X';
             deleteBtn.classList.add('delete');
             deleteBtn.onclick = async function() {
-                await deleteDoc(doc(db, "tasks", id));
-                taskList.removeChild(li);
+                try {
+                    await deleteDoc(doc(db, "tasks", id));
+                    taskList.removeChild(li);
+                } catch (e) {
+                    console.error("Error removing document: ", e);
+                }
             };
             li.appendChild(deleteBtn);
             taskList.appendChild(li);
         }
 
         async function loadTasks() {
-            const querySnapshot = await getDocs(collection(db, "tasks"));
-            querySnapshot.forEach((doc) => {
-                addTaskToDOM(doc.data().task, doc.id);
-            });
+            try {
+                const querySnapshot = await getDocs(collection(db, "tasks"));
+                querySnapshot.forEach((doc) => {
+                    addTaskToDOM(doc.data().task, doc.id);
+                });
+            } catch (e) {
+                console.error("Error getting documents: ", e);
+            }
         }
     </script>
 </body>
